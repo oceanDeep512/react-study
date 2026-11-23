@@ -278,7 +278,7 @@ export default function ReactFlowVisualizer() {
                   >
                     <span className="rf-ln">{String(n).padStart(2, "0")}</span>
                     <span className="rf-flag">{flag || " "}</span>
-                    <code>{line || " "}</code>
+                    <pre className="rf-code-text">{line || " "}</pre>
                   </div>
                 );
               })}

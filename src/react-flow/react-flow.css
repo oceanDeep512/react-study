@@ -217,37 +217,55 @@ body:has(.rf-app) {
 }
 
 .rf-code-scroll {
+  --rf-code-size: 12px;
+  --rf-code-lh: 20px;
   max-height: min(72vh, 720px);
   overflow: auto;
   padding: 8px 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12.5px;
-  line-height: 1.75;
+  font-family: Menlo, Consolas, "Noto Sans Mono CJK SC", "Sarasa Mono SC", monospace;
+  font-size: var(--rf-code-size);
+  line-height: var(--rf-code-lh);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   -webkit-overflow-scrolling: touch;
 }
 
 .rf-line {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   gap: 8px;
-  padding: 1px 12px;
-  white-space: pre;
+  min-height: var(--rf-code-lh);
+  padding: 0 12px;
   border-left: 3px solid transparent;
 }
 
-.rf-line code {
+.rf-line .rf-code-text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
   color: #b9c8e8;
-  font-family: inherit;
+  font: 400 var(--rf-code-size)/var(--rf-code-lh) Menlo, Consolas, "Noto Sans Mono CJK SC", "Sarasa Mono SC", monospace;
+  font-synthesis: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  tab-size: 2;
 }
 .rf-ln {
   flex: 0 0 22px;
+  height: var(--rf-code-lh);
   text-align: right;
   color: #4b5b7c;
+  font: 400 var(--rf-code-size)/var(--rf-code-lh) Menlo, Consolas, monospace;
   user-select: none;
 }
 .rf-flag {
   flex: 0 0 28px;
-  font-size: 10px;
+  height: var(--rf-code-lh);
+  font: 400 10px/var(--rf-code-lh) Menlo, Consolas, monospace;
   color: #4b5b7c;
   user-select: none;
 }
@@ -259,7 +277,7 @@ body:has(.rf-app) {
 .rf-line.is-done .rf-flag {
   color: var(--rf-done);
 }
-.rf-line.is-done code {
+.rf-line.is-done .rf-code-text {
   color: #d7f5ec;
 }
 
@@ -270,7 +288,7 @@ body:has(.rf-app) {
 .rf-line.is-active .rf-flag {
   color: #9cc4ff;
 }
-.rf-line.is-active code {
+.rf-line.is-active .rf-code-text {
   color: #fff;
 }
 
@@ -281,21 +299,21 @@ body:has(.rf-app) {
 .rf-line.is-skip .rf-flag {
   color: var(--rf-skip);
 }
-.rf-line.is-skip code {
+.rf-line.is-skip .rf-code-text {
   color: #a8907a;
   text-decoration: line-through;
   text-decoration-color: rgba(255, 180, 84, 0.4);
 }
 
-.rf-line.is-never code {
+.rf-line.is-never .rf-code-text {
   color: #6f7f9f;
 }
 
 .rf-line.is-preview .rf-flag {
   color: var(--rf-next);
 }
-.rf-line.is-preview code {
-  border-bottom: 1px dashed rgba(199, 155, 255, 0.75);
+.rf-line.is-preview .rf-code-text {
+  box-shadow: inset 0 -1px 0 0 rgba(199, 155, 255, 0.75);
 }
 
 .rf-tree-svg {
@@ -328,9 +346,9 @@ body:has(.rf-app) {
 }
 .rf-tree-node text {
   fill: #a9badb;
-  font-size: 13px;
-  font-weight: 600;
-  font-family: "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Menlo, Consolas, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .rf-tree-node.kind-root rect {
   fill: #1d2b4d;
@@ -795,7 +813,8 @@ body:has(.rf-app) {
     max-width: 150px;
   }
   .rf-code-scroll {
-    font-size: 12px;
+    --rf-code-size: 12px;
+    --rf-code-lh: 20px;
     max-height: 300px;
   }
   .rf-table-wrap {
