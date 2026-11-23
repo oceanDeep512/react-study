@@ -1,10 +1,9 @@
-/* 页面级 reset：让可视化页铺满视口，不受其它全局样式影响 */
 html:has(.rf-app),
 body:has(.rf-app),
 body:has(.rf-app) #root {
   margin: 0;
   padding: 0;
-  background: #070b14;
+  background: #0b1020;
 }
 html:has(.rf-app),
 body:has(.rf-app) {
@@ -18,8 +17,6 @@ body:has(.rf-app) {
   color: #e6edff;
 }
 
-.rf-left,
-.rf-right,
 .rf-code-scroll,
 .rf-table-wrap,
 .rf-scenes,
@@ -29,9 +26,9 @@ body:has(.rf-app) {
 }
 
 .rf-app {
-  --rf-bg: #070b14;
-  --rf-panel: rgba(15, 22, 39, 0.82);
-  --rf-border: rgba(122, 154, 224, 0.16);
+  --rf-bg: #0b1020;
+  --rf-panel: rgba(16, 24, 42, 0.92);
+  --rf-border: rgba(122, 154, 224, 0.18);
   --rf-text: #e6edff;
   --rf-dim: #8b9ab8;
   --rf-done: #35d6b0;
@@ -40,49 +37,45 @@ body:has(.rf-app) {
   --rf-next: #c79bff;
   --rf-never: #465472;
 
-  height: 100vh;
-  min-height: 660px;
-  overflow: hidden;
   box-sizing: border-box;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 14px 18px 14px;
+  padding: 16px 16px 88px;
   color: var(--rf-text);
   background:
-    radial-gradient(900px 520px at 12% -10%, rgba(74, 104, 220, 0.22), transparent 70%),
-    radial-gradient(760px 480px at 100% 0%, rgba(150, 86, 220, 0.16), transparent 70%),
+    radial-gradient(720px 420px at 8% -8%, rgba(60, 100, 210, 0.18), transparent 70%),
     var(--rf-bg);
-  font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 .rf-app *,
 .rf-app *::before,
-.rf-app *::after { box-sizing: border-box; }
+.rf-app *::after {
+  box-sizing: border-box;
+}
 
 .rf-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 24px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
-.rf-kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: #7ea0ff;
-  font-weight: 700;
+.rf-header h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  letter-spacing: 0.01em;
 }
-
-.rf-header h1 { margin: 6px 0 6px; font-size: 25px; }
 
 .rf-header p {
   margin: 0;
-  max-width: 780px;
+  max-width: 42rem;
   color: var(--rf-dim);
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .rf-legend {
@@ -93,102 +86,144 @@ body:has(.rf-app) {
   color: var(--rf-dim);
 }
 
-.rf-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.rf-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 
-.rf-chip { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-.rf-chip-done { background: var(--rf-done); }
-.rf-chip-active { background: var(--rf-active); }
-.rf-chip-skip { background: var(--rf-skip); }
-.rf-chip-next { background: var(--rf-next); }
-.rf-chip-never { background: var(--rf-never); }
+.rf-chip {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  display: inline-block;
+}
+.rf-chip-done {
+  background: var(--rf-done);
+}
+.rf-chip-active {
+  background: var(--rf-active);
+}
+.rf-chip-skip {
+  background: var(--rf-skip);
+}
+.rf-chip-next {
+  background: var(--rf-next);
+}
 
-.rf-scenes { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.rf-scenes {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
 
 .rf-scene-btn {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   align-items: flex-start;
-  padding: 9px 13px;
+  max-width: 220px;
+  padding: 8px 12px;
   border-radius: 10px;
   border: 1px solid var(--rf-border);
-  background: rgba(20, 29, 50, 0.7);
+  background: rgba(20, 29, 50, 0.75);
   color: var(--rf-dim);
   cursor: pointer;
   text-align: left;
-  transition: 0.18s ease;
 }
 
-.rf-scene-btn:hover { border-color: rgba(122, 170, 255, 0.5); color: var(--rf-text); }
+.rf-scene-btn:hover {
+  border-color: rgba(122, 170, 255, 0.5);
+  color: var(--rf-text);
+}
 
 .rf-scene-btn.is-active {
-  background: linear-gradient(135deg, rgba(78, 116, 255, 0.28), rgba(146, 92, 255, 0.2));
+  background: rgba(70, 110, 255, 0.22);
   border-color: rgba(130, 170, 255, 0.65);
   color: #fff;
-  box-shadow: 0 8px 24px rgba(60, 90, 200, 0.2);
 }
 
-.rf-scene-tag { font-size: 9px; letter-spacing: 0.12em; font-weight: 800; color: #7ea0ff; }
-.rf-scene-btn.is-active .rf-scene-tag { color: #a9c4ff; }
-.rf-scene-title { font-size: 12px; white-space: nowrap; }
+.rf-scene-tag {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #7ea0ff;
+}
+.rf-scene-btn.is-active .rf-scene-tag {
+  color: #a9c4ff;
+}
+.rf-scene-title {
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 196px;
+}
+
+.rf-scene-summary {
+  margin: 0;
+  color: var(--rf-dim);
+  font-size: 12px;
+  line-height: 1.6;
+}
 
 .rf-main {
-  flex: 1;
-  min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 14px;
+  align-items: start;
 }
 
-.rf-left, .rf-right {
+.rf-left,
+.rf-right {
   min-width: 0;
-  min-height: 0;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .rf-panel {
   background: var(--rf-panel);
   border: 1px solid var(--rf-border);
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  backdrop-filter: blur(8px);
 }
 
 .rf-panel-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  gap: 10px;
+  padding: 9px 12px;
   border-bottom: 1px solid var(--rf-border);
   font-size: 12px;
   font-weight: 700;
   color: #c9d8ff;
 }
 
-.rf-hint { font-size: 11px; font-weight: 500; color: var(--rf-dim); }
+.rf-hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--rf-dim);
+}
 
-/* 右列上方三块保持自然高度，剩余空间全部留给执行顺序表 */
-.rf-phase-panel,
-.rf-step-panel,
-.rf-result-panel { flex: 0 0 auto; }
-
-/* 代码面板 */
-.rf-code-panel { flex: 1 1 0; min-height: 200px; display: flex; flex-direction: column; }
+.rf-code-panel {
+  position: sticky;
+  top: 12px;
+}
 
 .rf-code-scroll {
-  flex: 1 1 0;
-  min-height: 0;
-  max-height: none;
+  max-height: min(72vh, 720px);
   overflow: auto;
   padding: 8px 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.75;
+  -webkit-overflow-scrolling: touch;
 }
 
 .rf-line {
@@ -198,167 +233,287 @@ body:has(.rf-app) {
   padding: 1px 12px;
   white-space: pre;
   border-left: 3px solid transparent;
-  transition: background 0.15s ease;
 }
 
-.rf-line code { color: #b9c8e8; font-family: inherit; }
-.rf-ln { flex: 0 0 22px; text-align: right; color: #4b5b7c; user-select: none; }
-.rf-flag { flex: 0 0 34px; font-size: 10px; color: #4b5b7c; user-select: none; }
+.rf-line code {
+  color: #b9c8e8;
+  font-family: inherit;
+}
+.rf-ln {
+  flex: 0 0 22px;
+  text-align: right;
+  color: #4b5b7c;
+  user-select: none;
+}
+.rf-flag {
+  flex: 0 0 28px;
+  font-size: 10px;
+  color: #4b5b7c;
+  user-select: none;
+}
 
-.rf-line.is-done { border-left-color: rgba(53, 214, 176, 0.55); background: rgba(53, 214, 176, 0.045); }
-.rf-line.is-done .rf-flag { color: var(--rf-done); }
-.rf-line.is-done code { color: #d7f5ec; }
+.rf-line.is-done {
+  border-left-color: rgba(53, 214, 176, 0.55);
+  background: rgba(53, 214, 176, 0.045);
+}
+.rf-line.is-done .rf-flag {
+  color: var(--rf-done);
+}
+.rf-line.is-done code {
+  color: #d7f5ec;
+}
 
 .rf-line.is-active {
   border-left-color: var(--rf-active);
   background: rgba(106, 166, 255, 0.16);
-  box-shadow: inset 0 0 22px rgba(106, 166, 255, 0.08);
 }
-.rf-line.is-active .rf-flag { color: #9cc4ff; }
-.rf-line.is-active code { color: #fff; }
+.rf-line.is-active .rf-flag {
+  color: #9cc4ff;
+}
+.rf-line.is-active code {
+  color: #fff;
+}
 
-.rf-line.is-skip { border-left-color: rgba(255, 180, 84, 0.6); background: rgba(255, 180, 84, 0.06); }
-.rf-line.is-skip .rf-flag { color: var(--rf-skip); }
-.rf-line.is-skip code { color: #a8907a; text-decoration: line-through; text-decoration-color: rgba(255, 180, 84, 0.4); }
+.rf-line.is-skip {
+  border-left-color: rgba(255, 180, 84, 0.6);
+  background: rgba(255, 180, 84, 0.06);
+}
+.rf-line.is-skip .rf-flag {
+  color: var(--rf-skip);
+}
+.rf-line.is-skip code {
+  color: #a8907a;
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 180, 84, 0.4);
+}
 
-.rf-line.is-never code { color: #6f7f9f; }
+.rf-line.is-never code {
+  color: #6f7f9f;
+}
 
-.rf-line.is-preview .rf-flag { color: var(--rf-next); }
-.rf-line.is-preview code { border-bottom: 1px dashed rgba(199, 155, 255, 0.75); }
+.rf-line.is-preview .rf-flag {
+  color: var(--rf-next);
+}
+.rf-line.is-preview code {
+  border-bottom: 1px dashed rgba(199, 155, 255, 0.75);
+}
 
-/* 组件树图 */
-.rf-tree-panel { flex: 0 0 auto; }
 .rf-tree-svg {
   display: block;
   width: 100%;
-  height: 132px;
-  padding: 4px 8px 6px;
-  background: radial-gradient(400px 180px at 50% 45%, rgba(60, 90, 170, 0.1), transparent 75%);
+  height: auto;
+  min-height: 140px;
+  padding: 8px 8px 10px;
 }
-.rf-tree-edge { fill: none; stroke: #263552; stroke-width: 1.6; transition: 0.2s ease; }
-.rf-tree-edge.is-lit { stroke: #35d6b0; opacity: 0.6; }
-.rf-tree-edge.is-current { stroke: #6aa6ff; stroke-width: 2.4; opacity: 1; }
+
+.rf-tree-edge {
+  fill: none;
+  stroke: #263552;
+  stroke-width: 1.6;
+}
+.rf-tree-edge.is-lit {
+  stroke: #35d6b0;
+  opacity: 0.6;
+}
+.rf-tree-edge.is-current {
+  stroke: #6aa6ff;
+  stroke-width: 2.2;
+  opacity: 1;
+}
 
 .rf-tree-node rect {
   fill: #16233d;
   stroke: #34456b;
-  stroke-width: 1.5;
-  transition: 0.2s ease;
+  stroke-width: 1.4;
 }
 .rf-tree-node text {
   fill: #a9badb;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
-  font-family: system-ui, -apple-system, "PingFang SC", sans-serif;
+  font-family: "Segoe UI", "PingFang SC", sans-serif;
 }
-.rf-tree-node.kind-root rect { fill: #1d2b4d; }
-.rf-tree-node.kind-dom rect { fill: #132b35; stroke: #2b5e66; }
-.rf-tree-node.is-done rect { stroke: #35d6b0; fill: rgba(53, 214, 176, 0.09); }
-.rf-tree-node.is-done text { fill: #9fe8d6; }
+.rf-tree-node.kind-root rect {
+  fill: #1d2b4d;
+}
+.rf-tree-node.kind-dom rect {
+  fill: #132b35;
+  stroke: #2b5e66;
+}
+.rf-tree-node.is-done rect {
+  stroke: #35d6b0;
+  fill: rgba(53, 214, 176, 0.09);
+}
+.rf-tree-node.is-done text {
+  fill: #9fe8d6;
+}
 .rf-tree-node.is-current rect {
   stroke: #6aa6ff;
   fill: rgba(106, 166, 255, 0.2);
   stroke-width: 2;
-  filter: drop-shadow(0 0 8px rgba(106, 166, 255, 0.65));
 }
-.rf-tree-node.is-current text { fill: #fff; }
+.rf-tree-node.is-current text {
+  fill: #fff;
+}
 .rf-tree-node.is-gone rect {
   stroke: #465472;
   stroke-dasharray: 5 4;
   fill: rgba(70, 84, 114, 0.12);
 }
-.rf-tree-node.is-gone text { fill: #5d6b8c; text-decoration: line-through; }
+.rf-tree-node.is-gone text {
+  fill: #5d6b8c;
+  text-decoration: line-through;
+}
 
-/* 阶段泳道图 */
 .rf-phase {
   font-size: 11px;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 999px;
   border: 1px solid var(--rf-border);
   color: #cfe0ff;
 }
-.rf-phase-render, .rf-phase-update { background: rgba(106, 166, 255, 0.16); border-color: rgba(106, 166, 255, 0.45); }
-.rf-phase-reconcile { background: rgba(164, 123, 255, 0.16); border-color: rgba(164, 123, 255, 0.45); }
-.rf-phase-commit, .rf-phase-unmount { background: rgba(53, 214, 176, 0.14); border-color: rgba(53, 214, 176, 0.42); }
-.rf-phase-layout, .rf-phase-cleanup { background: rgba(255, 180, 84, 0.14); border-color: rgba(255, 180, 84, 0.42); }
-.rf-phase-effect { background: rgba(199, 155, 255, 0.14); border-color: rgba(199, 155, 255, 0.42); }
-.rf-phase-idle, .rf-phase-paint { background: rgba(140, 154, 190, 0.12); }
+.rf-phase-render,
+.rf-phase-update {
+  background: rgba(106, 166, 255, 0.16);
+  border-color: rgba(106, 166, 255, 0.45);
+}
+.rf-phase-reconcile {
+  background: rgba(164, 123, 255, 0.16);
+  border-color: rgba(164, 123, 255, 0.45);
+}
+.rf-phase-commit {
+  background: rgba(53, 214, 176, 0.14);
+  border-color: rgba(53, 214, 176, 0.42);
+}
+.rf-phase-unmount {
+  background: rgba(255, 120, 120, 0.14);
+  border-color: rgba(255, 140, 140, 0.42);
+}
+.rf-phase-layout,
+.rf-phase-cleanup {
+  background: rgba(255, 180, 84, 0.14);
+  border-color: rgba(255, 180, 84, 0.42);
+}
+.rf-phase-effect {
+  background: rgba(199, 155, 255, 0.14);
+  border-color: rgba(199, 155, 255, 0.42);
+}
+.rf-phase-idle,
+.rf-phase-paint {
+  background: rgba(140, 154, 190, 0.12);
+}
 
-.rf-phase-chart { display: flex; gap: 8px; padding: 12px; overflow-x: auto; }
+.rf-phase-chart {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .rf-phase-block {
   position: relative;
-  flex: 1 0 92px;
-  min-width: 92px;
-  padding: 9px 10px 10px;
-  border-radius: 9px;
+  flex: 1 0 84px;
+  min-width: 84px;
+  padding: 8px 9px;
+  border-radius: 8px;
   border: 1px solid var(--rf-border);
   background: rgba(24, 34, 56, 0.75);
-  transition: 0.2s ease;
 }
 
 .rf-phase-block:not(:last-child)::after {
   content: "→";
   position: absolute;
-  right: -11px;
+  right: -10px;
   top: 50%;
   transform: translateY(-50%);
   color: #46577c;
-  font-size: 13px;
+  font-size: 12px;
   z-index: 2;
 }
 
-.rf-phase-index { display: block; font-size: 9px; color: #5f7096; margin-bottom: 2px; }
-.rf-phase-block b { display: block; font-size: 13px; color: #c6d5f5; }
-.rf-phase-block small { display: block; font-size: 10px; color: #7c8cae; margin-top: 3px; white-space: nowrap; }
+.rf-phase-index {
+  display: block;
+  font-size: 9px;
+  color: #5f7096;
+  margin-bottom: 2px;
+}
+.rf-phase-block b {
+  display: block;
+  font-size: 12px;
+  color: #c6d5f5;
+}
+.rf-phase-block small {
+  display: block;
+  font-size: 10px;
+  color: #7c8cae;
+  margin-top: 2px;
+  white-space: nowrap;
+}
 
-.rf-phase-block.is-past { border-color: rgba(53, 214, 176, 0.45); }
-.rf-phase-block.is-past b { color: #8ee9d1; }
+.rf-phase-block.is-past {
+  border-color: rgba(53, 214, 176, 0.45);
+}
+.rf-phase-block.is-past b {
+  color: #8ee9d1;
+}
 
 .rf-phase-block.is-active {
   border-color: #8fb0ff;
-  background: linear-gradient(135deg, rgba(77, 120, 255, 0.3), rgba(146, 92, 255, 0.22));
-  box-shadow: 0 0 18px rgba(77, 120, 255, 0.3);
+  background: rgba(77, 120, 255, 0.28);
 }
-.rf-phase-block.is-active b { color: #fff; }
-.rf-phase-block.is-active small { color: #d2ddff; }
+.rf-phase-block.is-active b {
+  color: #fff;
+}
+.rf-phase-block.is-active small {
+  color: #d2ddff;
+}
 
-/* 步骤解释 */
-.rf-step-panel { padding-bottom: 12px; }
-.rf-step-panel h2 { margin: 12px 14px 6px; font-size: 16px; }
-.rf-detail { margin: 0 14px; font-size: 13px; line-height: 1.85; color: #c2cee8; }
+.rf-step-panel h2 {
+  margin: 10px 12px 6px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.rf-detail {
+  margin: 0 12px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: #c2cee8;
+}
 
 .rf-note {
-  margin: 10px 14px 0;
-  padding: 9px 11px;
+  margin: 10px 12px 0;
+  padding: 8px 10px;
   border-left: 3px solid var(--rf-skip);
   background: rgba(255, 180, 84, 0.08);
   border-radius: 0 8px 8px 0;
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.65;
   color: #e8d6bb;
 }
-.rf-note b { display: inline-block; margin-right: 8px; color: var(--rf-skip); }
+.rf-note b {
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--rf-skip);
+}
 
 .rf-next {
-  margin: 10px 14px 0;
-  padding: 10px 12px;
-  border: 1px dashed rgba(199, 155, 255, 0.55);
+  margin: 10px 12px 12px;
+  padding: 9px 11px;
+  border: 1px dashed rgba(199, 155, 255, 0.5);
   background: rgba(199, 155, 255, 0.07);
-  border-radius: 9px;
+  border-radius: 8px;
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.65;
   color: #ded1f5;
 }
-.rf-next b { display: block; margin-bottom: 4px; color: var(--rf-next); }
-.rf-next small { display: block; margin-top: 6px; color: #8b9ab8; font-size: 11px; }
+.rf-next b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--rf-next);
+}
 
-.rf-summary { margin: 10px 14px 0; font-size: 11px; line-height: 1.7; color: var(--rf-dim); }
-
-/* DOM 结果 */
-.rf-result-panel { flex: 0 0 auto; }
 .rf-browser {
-  margin: 12px 14px 14px;
+  margin: 10px 12px 12px;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid rgba(122, 154, 224, 0.22);
@@ -372,24 +527,39 @@ body:has(.rf-app) {
   background: #e3e9f7;
   border-bottom: 1px solid #d3dcee;
 }
-.rf-browser-bar i { width: 8px; height: 8px; border-radius: 50%; background: #ff8b8b; }
-.rf-browser-bar i:nth-child(2) { background: #ffc86b; }
-.rf-browser-bar i:nth-child(3) { background: #71d6a8; }
-.rf-browser-bar span { margin-left: 10px; font-size: 10px; color: #6c7a99; font-family: ui-monospace, monospace; }
+.rf-browser-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff8b8b;
+}
+.rf-browser-bar i:nth-child(2) {
+  background: #ffc86b;
+}
+.rf-browser-bar i:nth-child(3) {
+  background: #71d6a8;
+}
 .rf-browser-body {
-  min-height: 56px;
-  padding: 14px 16px;
+  min-height: 48px;
+  padding: 12px 14px;
   color: #1b2740;
   font-size: 14px;
   font-weight: 600;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-word;
 }
 
-/* 执行顺序表 */
-.rf-table-panel { flex: 1 1 0; min-height: 160px; display: flex; flex-direction: column; }
-.rf-table-wrap { flex: 1 1 0; min-height: 0; max-height: none; overflow: auto; }
+.rf-table-wrap {
+  max-height: 260px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
-.rf-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.rf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
 .rf-table th {
   position: sticky;
   top: 0;
@@ -401,112 +571,234 @@ body:has(.rf-app) {
   font-weight: 600;
   border-bottom: 1px solid var(--rf-border);
 }
-.rf-table td { padding: 6px 8px; border-bottom: 1px solid rgba(122, 154, 224, 0.08); color: #93a4c6; }
-.rf-table td:first-child { color: #5f7096; }
-.rf-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 10px; }
-.rf-cell-result { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-.rf-row { cursor: pointer; transition: 0.15s ease; }
-.rf-row:hover { background: rgba(106, 166, 255, 0.08); }
-.rf-row.is-past { opacity: 0.62; }
-.rf-row.is-current { background: rgba(106, 166, 255, 0.18); opacity: 1; }
-.rf-row.is-current td { color: #fff; }
-
-.rf-mini { display: inline-block; padding: 2px 6px; border-radius: 5px; font-size: 10px; white-space: nowrap; }
-.p-idle, .p-paint { background: rgba(140, 154, 190, 0.18); color: #b3c0da; }
-.p-render, .p-update { background: rgba(106, 166, 255, 0.18); color: #a9c8ff; }
-.p-reconcile { background: rgba(164, 123, 255, 0.18); color: #cbb4ff; }
-.p-commit, .p-unmount { background: rgba(53, 214, 176, 0.16); color: #8ee9d1; }
-.p-layout, .p-cleanup { background: rgba(255, 180, 84, 0.16); color: #ffd095; }
-.p-effect { background: rgba(199, 155, 255, 0.16); color: #dcc2ff; }
-
-/* 控制条 */
-.rf-controls {
-  display: grid;
-  grid-template-columns: auto minmax(160px, 1fr) auto;
-  align-items: center;
-  gap: 18px;
-  padding: 12px 14px;
-  border: 1px solid var(--rf-border);
-  border-radius: 14px;
-  background: var(--rf-panel);
+.rf-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(122, 154, 224, 0.08);
+  color: #93a4c6;
+}
+.rf-table td:first-child {
+  color: #5f7096;
+}
+.rf-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
 }
 
-.rf-buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.rf-buttons button, .rf-speed select {
-  padding: 7px 12px;
+.rf-row {
+  cursor: pointer;
+}
+.rf-row:hover {
+  background: rgba(106, 166, 255, 0.08);
+}
+.rf-row.is-past {
+  opacity: 0.62;
+}
+.rf-row.is-current {
+  background: rgba(106, 166, 255, 0.18);
+  opacity: 1;
+}
+.rf-row.is-current td {
+  color: #fff;
+}
+
+.rf-mini {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.p-idle,
+.p-paint {
+  background: rgba(140, 154, 190, 0.18);
+  color: #b3c0da;
+}
+.p-render,
+.p-update {
+  background: rgba(106, 166, 255, 0.18);
+  color: #a9c8ff;
+}
+.p-reconcile {
+  background: rgba(164, 123, 255, 0.18);
+  color: #cbb4ff;
+}
+.p-commit {
+  background: rgba(53, 214, 176, 0.16);
+  color: #8ee9d1;
+}
+.p-unmount {
+  background: rgba(255, 120, 120, 0.16);
+  color: #ffb0b0;
+}
+.p-layout,
+.p-cleanup {
+  background: rgba(255, 180, 84, 0.16);
+  color: #ffd095;
+}
+.p-effect {
+  background: rgba(199, 155, 255, 0.16);
+  color: #dcc2ff;
+}
+
+.rf-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -16px -88px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--rf-border);
+  background: rgba(11, 16, 32, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+.rf-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rf-buttons button,
+.rf-speed select {
+  padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid var(--rf-border);
-  background: rgba(28, 39, 64, 0.85);
+  background: rgba(28, 39, 64, 0.9);
   color: #cdd9f5;
   font-size: 12px;
   cursor: pointer;
-  transition: 0.15s ease;
 }
-.rf-buttons button:hover { border-color: rgba(122, 170, 255, 0.6); color: #fff; }
+.rf-buttons button:hover {
+  border-color: rgba(122, 170, 255, 0.6);
+  color: #fff;
+}
 .rf-buttons .rf-primary {
-  background: linear-gradient(135deg, #4d78ff, #8a5cff);
+  background: #4d78ff;
   border-color: transparent;
   color: #fff;
   font-weight: 700;
-  min-width: 92px;
+  min-width: 72px;
 }
-.rf-speed { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--rf-dim); }
-.rf-speed select { padding: 6px 8px; }
+.rf-speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--rf-dim);
+}
+.rf-speed select {
+  padding: 6px 8px;
+}
 
-.rf-timeline { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.rf-track { height: 4px; border-radius: 999px; background: rgba(90, 110, 155, 0.24); overflow: hidden; }
-.rf-track-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #4d78ff, #35d6b0); transition: width 0.25s ease; }
-.rf-dots { display: flex; gap: 4px; flex-wrap: wrap; }
+.rf-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.rf-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(90, 110, 155, 0.24);
+  overflow: hidden;
+}
+.rf-track-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4d78ff, #35d6b0);
+}
+.rf-dots {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
 .rf-dot {
-  width: 23px;
-  height: 23px;
-  border-radius: 7px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   border: 1px solid var(--rf-border);
   background: rgba(28, 39, 64, 0.8);
   color: var(--rf-dim);
   font-size: 10px;
   cursor: pointer;
-  transition: 0.15s ease;
 }
-.rf-dot:hover { color: #fff; border-color: rgba(122, 170, 255, 0.6); }
-.rf-dot.is-past { color: var(--rf-done); border-color: rgba(53, 214, 176, 0.4); }
-.rf-dot.is-current { background: #4d78ff; border-color: #8fb0ff; color: #fff; box-shadow: 0 0 14px rgba(77, 120, 255, 0.6); }
+.rf-dot.is-past {
+  color: var(--rf-done);
+  border-color: rgba(53, 214, 176, 0.4);
+}
+.rf-dot.is-current {
+  background: #4d78ff;
+  border-color: #8fb0ff;
+  color: #fff;
+}
 
-.rf-counter { font-size: 12px; color: var(--rf-dim); white-space: nowrap; display: flex; flex-direction: column; gap: 3px; align-items: flex-end; }
-.rf-counter b { color: #fff; font-size: 14px; }
+.rf-counter {
+  font-size: 12px;
+  color: var(--rf-dim);
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+.rf-counter b {
+  color: #fff;
+  font-size: 14px;
+}
 
-/* 右列紧凑布局：给组件树图和执行顺序表留出空间 */
-.rf-right { gap: 10px; }
-.rf-right .rf-panel-head { padding: 8px 12px; }
-.rf-right .rf-phase-chart { padding: 9px; }
-.rf-right .rf-step-panel { padding-bottom: 8px; }
-.rf-right .rf-step-panel h2 { margin: 9px 12px 4px; font-size: 15px; }
-.rf-right .rf-detail { margin: 0 12px; font-size: 12.5px; line-height: 1.7; }
-.rf-right .rf-note { margin: 8px 12px 0; padding: 7px 9px; font-size: 11.5px; }
-.rf-right .rf-next { margin: 8px 12px 0; padding: 8px 10px; font-size: 11.5px; }
-.rf-right .rf-summary { margin: 8px 12px 0; font-size: 10.5px; }
-.rf-right .rf-browser { margin: 9px 12px 10px; }
-.rf-right .rf-browser-body { min-height: 46px; padding: 10px 14px; }
-.rf-right .rf-table-panel { min-height: 140px; }
-.rf-left .rf-code-scroll { font-size: 13px; line-height: 1.8; }
-
-@media (max-width: 1100px) {
-  .rf-app { height: auto; min-height: 100vh; overflow: visible; }
-  .rf-main { grid-template-columns: 1fr; }
-  .rf-left, .rf-right { overflow: visible; }
-  .rf-code-panel { flex: 0 0 auto; min-height: 340px; }
-  .rf-code-scroll { max-height: 420px; }
-  .rf-table-panel,
-  .rf-right .rf-table-panel { flex: 0 0 auto; min-height: 320px; }
-  .rf-table-wrap { max-height: 340px; }
-  .rf-controls { grid-template-columns: 1fr; }
-  .rf-counter { align-items: flex-start; }
+@media (max-width: 960px) {
+  .rf-main {
+    grid-template-columns: 1fr;
+  }
+  .rf-code-panel {
+    position: static;
+  }
+  .rf-code-scroll {
+    max-height: 360px;
+  }
+  .rf-controls {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .rf-counter {
+    align-items: flex-start;
+  }
+  .rf-timeline {
+    order: -1;
+  }
 }
 
 @media (max-width: 640px) {
-  .rf-app { padding: 14px; }
-  .rf-header h1 { font-size: 20px; }
-  .rf-phase-chart { gap: 6px; }
-  .rf-phase-block { flex-basis: 86px; min-width: 86px; }
+  .rf-app {
+    padding: 12px 12px 108px;
+    gap: 10px;
+  }
+  .rf-header h1 {
+    font-size: 18px;
+  }
+  .rf-header p,
+  .rf-scene-summary {
+    font-size: 12px;
+  }
+  .rf-controls {
+    margin: 0 -12px -108px;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .rf-phase-block {
+    flex-basis: 78px;
+    min-width: 78px;
+  }
+  .rf-scene-title {
+    max-width: 150px;
+  }
+  .rf-code-scroll {
+    font-size: 12px;
+    max-height: 300px;
+  }
+  .rf-table-wrap {
+    max-height: 220px;
+  }
 }

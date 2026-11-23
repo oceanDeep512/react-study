@@ -5,51 +5,31 @@ import type { Phase, TreeNode } from "./types";
 import { lineView } from "./types";
 
 const PHASE_LABEL: Record<Phase, string> = {
-  idle: "事件 / 准备",
+  idle: "事件",
   render: "render",
   reconcile: "reconcile",
   commit: "commit",
   layout: "layoutEffect",
-  paint: "paint 绘制",
+  paint: "paint",
   effect: "useEffect",
   cleanup: "cleanup",
   unmount: "卸载",
   update: "更新",
 };
 
-/** 阶段泳道图：把一个步骤归到 6 个核心阶段之一 */
+/** 阶段条：只对应真正的流水线阶段，事件/卸载单独显示在徽章上 */
 const PHASE_BLOCKS: { id: string; label: string; sub: string; of: Phase[] }[] =
   [
-    {
-      id: "render",
-      label: "render",
-      sub: "执行组件函数",
-      of: ["idle", "render", "update"],
-    },
-    {
-      id: "reconcile",
-      label: "reconcile",
-      sub: "对比元素树",
-      of: ["reconcile"],
-    },
-    {
-      id: "commit",
-      label: "commit",
-      sub: "写入真实 DOM",
-      of: ["commit", "unmount"],
-    },
-    {
-      id: "layout",
-      label: "layout",
-      sub: "layoutEffect / cleanup",
-      of: ["layout", "cleanup"],
-    },
+    { id: "render", label: "render", sub: "跑组件函数", of: ["render", "update"] },
+    { id: "reconcile", label: "reconcile", sub: "对比元素树", of: ["reconcile"] },
+    { id: "commit", label: "commit", sub: "写入 DOM", of: ["commit"] },
+    { id: "layout", label: "layout", sub: "layoutEffect", of: ["layout", "cleanup"] },
     { id: "paint", label: "paint", sub: "浏览器绘制", of: ["paint"] },
     { id: "effect", label: "effect", sub: "useEffect", of: ["effect"] },
   ];
 
-const NODE_W = 132;
-const NODE_H = 40;
+const NODE_W = 148;
+const NODE_H = 36;
 
 function TreeChart({
   tree,
@@ -63,10 +43,12 @@ function TreeChart({
   mounted: Set<string>;
 }) {
   const byId = new Map(tree.map((n) => [n.id, n]));
+  const maxY = tree.reduce((m, n) => Math.max(m, n.y + NODE_H), 0);
+  const height = Math.max(maxY + 12, 120);
   return (
     <svg
       className="rf-tree-svg"
-      viewBox="0 0 560 196"
+      viewBox={`0 0 560 ${height}`}
       role="img"
       aria-label="组件树关系图"
     >
@@ -100,7 +82,7 @@ function TreeChart({
         ].join(" ");
         return (
           <g className={cls} key={n.id}>
-            <rect x={n.x} y={n.y} width={NODE_W} height={NODE_H} rx={9} />
+            <rect x={n.x} y={n.y} width={NODE_W} height={NODE_H} rx={8} />
             <text
               x={n.x + NODE_W / 2}
               y={n.y + NODE_H / 2 + 5}
@@ -127,7 +109,6 @@ export default function ReactFlowVisualizer() {
   const last = scene.steps.length - 1;
   const view = useMemo(() => lineView(scene, stepIndex), [scene, stepIndex]);
   const result = step.result ?? scene.finalResult;
-  const nextStep = scene.steps[stepIndex + 1];
 
   const currentNodes = useMemo(() => new Set(step.active), [step]);
   const doneNodes = useMemo(() => {
@@ -172,6 +153,8 @@ export default function ReactFlowVisualizer() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
       if (e.key === "ArrowRight") {
         e.preventDefault();
         setPlaying(false);
@@ -217,33 +200,25 @@ export default function ReactFlowVisualizer() {
     <div className="rf-app">
       <header className="rf-header">
         <div>
-          <div className="rf-kicker">REACT RUNTIME · STEP BY STEP</div>
-          <h1>React 生命周期 · 代码逐步执行</h1>
-          <p>
-            一份实例代码、多个组件，一步一步看：哪几行正在执行、哪几行被跳过、组件树怎么变、下一步轮到谁，以及每一步之后的真实
-            DOM 结果。
-          </p>
+          <h1>React 生命周期 · 逐步看</h1>
+          <p>对照代码行、阶段和 DOM，一步步看 React 在干什么。</p>
         </div>
-        <div className="rf-legend">
+        <div className="rf-legend" aria-label="图例">
           <span>
             <i className="rf-chip rf-chip-done" />
-            已执行过
+            已执行
           </span>
           <span>
             <i className="rf-chip rf-chip-active" />
-            当前执行
+            当前
           </span>
           <span>
             <i className="rf-chip rf-chip-skip" />
-            本步跳过
+            跳过
           </span>
           <span>
             <i className="rf-chip rf-chip-next" />
             下一步
-          </span>
-          <span>
-            <i className="rf-chip rf-chip-never" />
-            尚未轮到
           </span>
         </div>
       </header>
@@ -252,6 +227,7 @@ export default function ReactFlowVisualizer() {
         {SCENES.map((s, i) => (
           <button
             key={s.id}
+            type="button"
             className={`rf-scene-btn ${i === sceneIndex ? "is-active" : ""}`}
             onClick={() => selectScene(i)}
             title={s.summary}
@@ -262,12 +238,14 @@ export default function ReactFlowVisualizer() {
         ))}
       </nav>
 
+      <p className="rf-scene-summary">{scene.summary}</p>
+
       <main className="rf-main">
         <section className="rf-left">
           <div className="rf-panel rf-code-panel">
             <div className="rf-panel-head">
-              <span>实例代码 · 执行状态</span>
-              <span className="rf-hint">行号 1-based · 虚线 = 下一步</span>
+              <span>实例代码</span>
+              <span className="rf-hint">蓝=当前 · 紫虚线=下一步 · 长行可横滑</span>
             </div>
             <div className="rf-code-scroll">
               {scene.code.map((line, i) => {
@@ -292,14 +270,14 @@ export default function ReactFlowVisualizer() {
                       ? "↓"
                       : executed
                         ? "✓"
-                        : "·";
+                        : "";
                 return (
                   <div
                     className={`rf-line ${status} ${previewed ? "is-preview" : ""}`}
                     key={n}
                   >
                     <span className="rf-ln">{String(n).padStart(2, "0")}</span>
-                    <span className="rf-flag">{flag}</span>
+                    <span className="rf-flag">{flag || " "}</span>
                     <code>{line || " "}</code>
                   </div>
                 );
@@ -309,12 +287,35 @@ export default function ReactFlowVisualizer() {
         </section>
 
         <section className="rf-right">
-          <div className="rf-panel rf-phase-panel">
+          <div className="rf-panel rf-step-panel">
             <div className="rf-panel-head">
-              <span>执行阶段泳道图</span>
+              <span>
+                第 {stepIndex + 1}/{scene.steps.length} 步
+              </span>
               <span className={`rf-phase rf-phase-${step.phase}`}>
                 {PHASE_LABEL[step.phase]}
               </span>
+            </div>
+            <h2>{step.title}</h2>
+            <p className="rf-detail">{step.detail}</p>
+            {step.note && (
+              <div className="rf-note">
+                <b>要点</b>
+                {step.note}
+              </div>
+            )}
+            {stepIndex < last && (
+              <div className="rf-next">
+                <b>下一步</b>
+                <span>{step.next}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="rf-panel rf-phase-panel">
+            <div className="rf-panel-head">
+              <span>执行阶段</span>
+              <span className="rf-hint">render → … → effect</span>
             </div>
             <div className="rf-phase-chart">
               {PHASE_BLOCKS.map((b, i) => (
@@ -330,55 +331,11 @@ export default function ReactFlowVisualizer() {
             </div>
           </div>
 
-          <div className="rf-panel rf-tree-panel">
-            <div className="rf-panel-head">
-              <span>组件树关系图</span>
-              <span className="rf-hint">蓝=当前 · 绿=已走过 · 虚线=已卸载</span>
-            </div>
-            <TreeChart
-              tree={scene.tree}
-              current={currentNodes}
-              done={doneNodes}
-              mounted={mountedNodes}
-            />
-          </div>
-
-          <div className="rf-panel rf-step-panel">
-            <div className="rf-panel-head">
-              <span>第 {stepIndex + 1} 步 · 详细解释</span>
-              <span className="rf-hint">{scene.tag}</span>
-            </div>
-            <h2>{step.title}</h2>
-            <p className="rf-detail">{step.detail}</p>
-            {step.note && (
-              <div className="rf-note">
-                <b>要点</b>
-                {step.note}
-              </div>
-            )}
-            <div className="rf-next">
-              <b>下一步 →</b>
-              <span>{step.next}</span>
-              {nextStep && (
-                <small>
-                  {nextStep.title}
-                  {view.preview.length > 0
-                    ? ` · 预告行 ${Array.from(new Set(view.preview))
-                        .sort((a, b) => a - b)
-                        .map((n) => `L${n}`)
-                        .join(", ")}`
-                    : ""}
-                </small>
-              )}
-            </div>
-            <div className="rf-summary">{scene.summary}</div>
-          </div>
-
           <div className="rf-panel rf-result-panel">
             <div className="rf-panel-head">
-              <span>当前真实 DOM 结果</span>
+              <span>页面结果</span>
               <span className="rf-hint">
-                {stepIndex === last ? "最终结果" : "本步之后"}
+                {stepIndex === last ? "最终" : "本步之后"}
               </span>
             </div>
             <div className="rf-browser">
@@ -391,10 +348,23 @@ export default function ReactFlowVisualizer() {
             </div>
           </div>
 
+          <div className="rf-panel rf-tree-panel">
+            <div className="rf-panel-head">
+              <span>组件树</span>
+              <span className="rf-hint">蓝=当前 · 绿=走过 · 虚线=已卸</span>
+            </div>
+            <TreeChart
+              tree={scene.tree}
+              current={currentNodes}
+              done={doneNodes}
+              mounted={mountedNodes}
+            />
+          </div>
+
           <div className="rf-panel rf-table-panel">
             <div className="rf-panel-head">
-              <span>执行顺序表（点击可跳转）</span>
-              <span className="rf-hint">{scene.steps.length} 步</span>
+              <span>步骤一览</span>
+              <span className="rf-hint">点击跳转</span>
             </div>
             <div className="rf-table-wrap" ref={tableRef}>
               <table className="rf-table">
@@ -403,8 +373,7 @@ export default function ReactFlowVisualizer() {
                     <th>#</th>
                     <th>阶段</th>
                     <th>做了什么</th>
-                    <th>执行行</th>
-                    <th>结果</th>
+                    <th>行</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -430,9 +399,6 @@ export default function ReactFlowVisualizer() {
                             ? lines.map((n) => `L${n}`).join(" ")
                             : "—"}
                         </td>
-                        <td className="rf-mono rf-cell-result">
-                          {s.result ?? "—"}
-                        </td>
                       </tr>
                     );
                   })}
@@ -445,14 +411,22 @@ export default function ReactFlowVisualizer() {
 
       <footer className="rf-controls">
         <div className="rf-buttons">
-          <button onClick={() => jump(0)}>重置</button>
-          <button onClick={() => jump(Math.max(stepIndex - 1, 0))}>
+          <button type="button" onClick={() => jump(0)}>
+            重置
+          </button>
+          <button
+            type="button"
+            onClick={() => jump(Math.max(stepIndex - 1, 0))}
+          >
             上一步
           </button>
-          <button className="rf-primary" onClick={togglePlay}>
-            {playing ? "暂停" : stepIndex >= last ? "重新播放" : "自动播放"}
+          <button type="button" className="rf-primary" onClick={togglePlay}>
+            {playing ? "暂停" : stepIndex >= last ? "重播" : "播放"}
           </button>
-          <button onClick={() => jump(Math.min(stepIndex + 1, last))}>
+          <button
+            type="button"
+            onClick={() => jump(Math.min(stepIndex + 1, last))}
+          >
             下一步
           </button>
           <label className="rf-speed">
@@ -481,6 +455,7 @@ export default function ReactFlowVisualizer() {
           <div className="rf-dots">
             {scene.steps.map((s, i) => (
               <button
+                type="button"
                 key={`${s.title}-dot-${i}`}
                 className={`rf-dot ${i === stepIndex ? "is-current" : ""} ${i < stepIndex ? "is-past" : ""}`}
                 title={`${i + 1}. ${s.title}`}
@@ -492,8 +467,10 @@ export default function ReactFlowVisualizer() {
           </div>
         </div>
         <div className="rf-counter">
-          步骤 <b>{stepIndex + 1}</b> / {scene.steps.length}
-          <span className="rf-hint">← → 单步 · 空格 播放</span>
+          <b>
+            {stepIndex + 1}/{scene.steps.length}
+          </b>
+          <span className="rf-hint">← → 单步 · 空格播放</span>
         </div>
       </footer>
     </div>

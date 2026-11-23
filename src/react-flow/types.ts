@@ -65,7 +65,7 @@ export interface LineView {
   focus: number[];
   /** 当前步明确跳过的行 */
   skipped: number[];
-  /** 下一步将高亮的行，用于「下一步执行什么」预告 */
+  /** 下一步将高亮的行（只取 focus，避免整段刷屏） */
   preview: number[];
 }
 
@@ -85,8 +85,6 @@ export function lineView(scene: FScene, upto: number): LineView {
     executed,
     focus: cur?.focus ?? [],
     skipped: cur?.skip ?? [],
-    preview: upto < scene.steps.length - 1
-      ? [...(next?.focus ?? []), ...(next?.exec ?? [])]
-      : [],
+    preview: next?.focus ?? [],
   };
 }
