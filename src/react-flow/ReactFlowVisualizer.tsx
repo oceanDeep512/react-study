@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./react-flow.css";
+import { highlightLine } from "./highlight";
 import { SCENES } from "./scenes";
 import type { Phase, TreeNode } from "./types";
 import { lineView } from "./types";
@@ -199,53 +200,52 @@ export default function ReactFlowVisualizer() {
   return (
     <div className="rf-app">
       <header className="rf-header">
-        <div>
-          <h1>React 生命周期 · 逐步看</h1>
-          <p>对照代码行、阶段和 DOM，一步步看 React 在干什么。</p>
-        </div>
-        <div className="rf-legend" aria-label="图例">
-          <span>
-            <i className="rf-chip rf-chip-done" />
-            已执行
-          </span>
-          <span>
-            <i className="rf-chip rf-chip-active" />
-            当前
-          </span>
-          <span>
-            <i className="rf-chip rf-chip-skip" />
-            跳过
-          </span>
-          <span>
-            <i className="rf-chip rf-chip-next" />
-            下一步
-          </span>
-        </div>
+        <h1>React 生命周期 · 逐步看</h1>
+        <p>对照代码行、阶段和 DOM，一步步看 React 在干什么。</p>
       </header>
 
-      <nav className="rf-scenes" aria-label="场景列表">
-        {SCENES.map((s, i) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`rf-scene-btn ${i === sceneIndex ? "is-active" : ""}`}
-            onClick={() => selectScene(i)}
-            title={s.summary}
+      <div className="rf-scene-bar">
+        <label className="rf-scene-menu">
+          <span className="rf-scene-menu-label">案例</span>
+          <select
+            value={sceneIndex}
+            onChange={(e) => selectScene(Number(e.target.value))}
+            aria-label="选择案例"
           >
-            <span className="rf-scene-tag">{s.tag}</span>
-            <span className="rf-scene-title">{s.title}</span>
-          </button>
-        ))}
-      </nav>
-
-      <p className="rf-scene-summary">{scene.summary}</p>
+            {SCENES.map((s, i) => (
+              <option key={s.id} value={i}>
+                {s.tag} · {s.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <p className="rf-scene-summary">{scene.summary}</p>
+      </div>
 
       <main className="rf-main">
         <section className="rf-left">
           <div className="rf-panel rf-code-panel">
             <div className="rf-panel-head">
               <span>实例代码</span>
-              <span className="rf-hint">蓝=当前 · 紫虚线=下一步 · 长行可横滑</span>
+              <span className="rf-hint">长行可横滑</span>
+            </div>
+            <div className="rf-legend" aria-label="代码图例">
+              <span>
+                <i className="rf-chip rf-chip-done" />
+                已执行
+              </span>
+              <span>
+                <i className="rf-chip rf-chip-active" />
+                当前
+              </span>
+              <span>
+                <i className="rf-chip rf-chip-skip" />
+                跳过
+              </span>
+              <span>
+                <i className="rf-chip rf-chip-next" />
+                下一步
+              </span>
             </div>
             <div className="rf-code-scroll">
               {scene.code.map((line, i) => {
@@ -278,7 +278,7 @@ export default function ReactFlowVisualizer() {
                   >
                     <span className="rf-ln">{String(n).padStart(2, "0")}</span>
                     <span className="rf-flag">{flag || " "}</span>
-                    <pre className="rf-code-text">{line || " "}</pre>
+                    <pre className="rf-code-text">{highlightLine(line)}</pre>
                   </div>
                 );
               })}
