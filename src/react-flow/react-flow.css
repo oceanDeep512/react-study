@@ -3,20 +3,19 @@ body:has(.rf-app),
 body:has(.rf-app) #root {
   margin: 0;
   padding: 0;
+  height: 100%;
   background: #0b1020;
 }
 html:has(.rf-app),
 body:has(.rf-app) {
-  min-height: 100%;
-  overflow-x: hidden;
-}
-body:has(.rf-app) #root {
-  min-height: 100vh;
+  overflow: hidden;
 }
 body:has(.rf-app) {
   color: #e6edff;
 }
 
+.rf-left,
+.rf-right,
 .rf-code-scroll,
 .rf-table-wrap,
 .rf-scenes,
@@ -38,11 +37,15 @@ body:has(.rf-app) {
   --rf-never: #465472;
 
   box-sizing: border-box;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px 16px 88px;
+  gap: 10px;
+  padding: 12px 16px 0;
   color: var(--rf-text);
   background:
     radial-gradient(720px 420px at 8% -8%, rgba(60, 100, 210, 0.18), transparent 70%),
@@ -57,6 +60,7 @@ body:has(.rf-app) {
 }
 
 .rf-header {
+  flex: 0 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -112,6 +116,7 @@ body:has(.rf-app) {
 }
 
 .rf-scenes {
+  flex: 0 0 auto;
   display: flex;
   gap: 8px;
   overflow-x: auto;
@@ -165,6 +170,7 @@ body:has(.rf-app) {
 }
 
 .rf-scene-summary {
+  flex: 0 0 auto;
   margin: 0;
   color: var(--rf-dim);
   font-size: 12px;
@@ -172,18 +178,30 @@ body:has(.rf-app) {
 }
 
 .rf-main {
+  flex: 1 1 0;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
+  overflow: hidden;
 }
 
 .rf-left,
 .rf-right {
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rf-right > .rf-panel {
+  flex: 0 0 auto;
 }
 
 .rf-panel {
@@ -212,14 +230,17 @@ body:has(.rf-app) {
 }
 
 .rf-code-panel {
-  position: sticky;
-  top: 12px;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .rf-code-scroll {
   --rf-code-size: 12px;
   --rf-code-lh: 20px;
-  max-height: min(72vh, 720px);
+  flex: 1 1 0;
+  min-height: 0;
   overflow: auto;
   padding: 8px 0;
   font-family: Menlo, Consolas, "Noto Sans Mono CJK SC", "Sarasa Mono SC", monospace;
@@ -659,17 +680,16 @@ body:has(.rf-app) {
 }
 
 .rf-controls {
-  position: sticky;
-  bottom: 0;
+  flex: 0 0 auto;
   z-index: 20;
   display: grid;
   grid-template-columns: auto minmax(120px, 1fr) auto;
   align-items: center;
   gap: 12px;
-  margin: 0 -16px -88px;
+  margin: 0 -16px;
   padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--rf-border);
-  background: rgba(11, 16, 32, 0.94);
+  background: rgba(11, 16, 32, 0.96);
   backdrop-filter: blur(10px);
 }
 
@@ -770,12 +790,21 @@ body:has(.rf-app) {
 @media (max-width: 960px) {
   .rf-main {
     grid-template-columns: 1fr;
+    overflow-y: auto;
+    align-content: start;
+  }
+  .rf-left,
+  .rf-right {
+    height: auto;
+    overflow: visible;
   }
   .rf-code-panel {
-    position: static;
+    flex: 0 0 auto;
+    min-height: 240px;
   }
   .rf-code-scroll {
-    max-height: 360px;
+    flex: 0 0 auto;
+    max-height: 42vh;
   }
   .rf-controls {
     grid-template-columns: 1fr;
@@ -791,8 +820,8 @@ body:has(.rf-app) {
 
 @media (max-width: 640px) {
   .rf-app {
-    padding: 12px 12px 108px;
-    gap: 10px;
+    padding: 10px 12px 0;
+    gap: 8px;
   }
   .rf-header h1 {
     font-size: 18px;
@@ -802,7 +831,7 @@ body:has(.rf-app) {
     font-size: 12px;
   }
   .rf-controls {
-    margin: 0 -12px -108px;
+    margin: 0 -12px;
     padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
   }
   .rf-phase-block {
@@ -813,11 +842,9 @@ body:has(.rf-app) {
     max-width: 150px;
   }
   .rf-code-scroll {
-    --rf-code-size: 12px;
-    --rf-code-lh: 20px;
-    max-height: 300px;
+    max-height: 36vh;
   }
   .rf-table-wrap {
-    max-height: 220px;
+    max-height: 200px;
   }
 }
