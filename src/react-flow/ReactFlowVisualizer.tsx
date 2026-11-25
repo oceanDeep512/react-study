@@ -256,9 +256,9 @@ export default function ReactFlowVisualizer() {
         </p>
       </div>
 
-      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
-        <section className="flex min-h-0 flex-col max-lg:shrink-0 lg:h-full lg:overflow-y-auto lg:overflow-hidden">
-          <div className={`${panel} flex min-h-0 flex-1 flex-col`}>
+      <main className="rf-mobile-scroll grid min-h-0 flex-1 grid-cols-1 content-start gap-3 overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch] lg:grid-cols-2 lg:content-stretch lg:items-stretch lg:overflow-hidden lg:overscroll-auto">
+        <section className="flex h-auto min-h-auto flex-col lg:h-full lg:min-h-0 lg:overflow-hidden">
+          <div className={`${panel} flex max-lg:min-h-[240px] flex-col lg:min-h-0 lg:flex-1`}>
             <div className={panelHead}>
               <span>实例代码</span>
               <span className={hint}>长行可横滑</span>
@@ -284,7 +284,7 @@ export default function ReactFlowVisualizer() {
                 下一步
               </span>
             </div>
-            <div className="min-h-0 flex-1 overflow-auto py-2 font-mono text-xs leading-5 max-lg:max-h-[38vh]">
+            <div className="overflow-auto py-2 font-mono text-xs leading-5 max-lg:max-h-[38vh] lg:min-h-0 lg:flex-1">
               {scene.code.map((line, i) => {
                 const n = i + 1;
                 const focused = view.focus.includes(n);
@@ -342,7 +342,7 @@ export default function ReactFlowVisualizer() {
           </div>
         </section>
 
-        <section className="flex min-h-0 flex-col gap-3 max-lg:shrink-0 lg:h-full lg:overflow-y-auto">
+        <section className="flex h-auto min-h-auto flex-col gap-3 lg:h-full lg:min-h-0 lg:overflow-y-auto">
           <div className={`${panel} shrink-0 pb-3`}>
             <div className={panelHead}>
               <span>
