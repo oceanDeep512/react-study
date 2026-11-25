@@ -283,26 +283,12 @@ body:has(.rf-app) {
 .rf-line.is-active .rf-code-text .tk-attr { color: #ffe08a; }
 .rf-line.is-active .rf-code-text .tk-num { color: #ffb090; }
 
-.rf-line.is-never .rf-code-text,
-.rf-line.is-never .rf-code-text .tk-kw,
-.rf-line.is-never .rf-code-text .tk-str,
-.rf-line.is-never .rf-code-text .tk-cmt,
-.rf-line.is-never .rf-code-text .tk-tag,
-.rf-line.is-never .rf-code-text .tk-attr,
-.rf-line.is-never .rf-code-text .tk-num,
-.rf-line.is-never .rf-code-text .tk-fn {
-  color: #6f7f9f;
+.rf-line.is-never .rf-code-text {
+  opacity: 0.72;
 }
 
-.rf-line.is-skip .rf-code-text,
-.rf-line.is-skip .rf-code-text .tk-kw,
-.rf-line.is-skip .rf-code-text .tk-str,
-.rf-line.is-skip .rf-code-text .tk-cmt,
-.rf-line.is-skip .rf-code-text .tk-tag,
-.rf-line.is-skip .rf-code-text .tk-attr,
-.rf-line.is-skip .rf-code-text .tk-num,
-.rf-line.is-skip .rf-code-text .tk-fn {
-  color: #a8907a;
+.rf-line.is-skip .rf-code-text {
+  opacity: 0.78;
 }
 .rf-ln {
   flex: 0 0 22px;
@@ -327,9 +313,6 @@ body:has(.rf-app) {
 .rf-line.is-done .rf-flag {
   color: var(--rf-done);
 }
-.rf-line.is-done .rf-code-text {
-  color: #d7f5ec;
-}
 
 .rf-line.is-active {
   border-left-color: var(--rf-active);
@@ -337,9 +320,6 @@ body:has(.rf-app) {
 }
 .rf-line.is-active .rf-flag {
   color: #9cc4ff;
-}
-.rf-line.is-active .rf-code-text {
-  color: #fff;
 }
 
 .rf-line.is-skip {
@@ -350,13 +330,8 @@ body:has(.rf-app) {
   color: var(--rf-skip);
 }
 .rf-line.is-skip .rf-code-text {
-  color: #a8907a;
   text-decoration: line-through;
   text-decoration-color: rgba(255, 180, 84, 0.4);
-}
-
-.rf-line.is-never .rf-code-text {
-  color: #6f7f9f;
 }
 
 .rf-line.is-preview .rf-flag {
