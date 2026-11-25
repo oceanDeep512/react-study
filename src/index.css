@@ -25,5 +25,16 @@ body,
 
 body {
   overflow: hidden;
+  overscroll-behavior: none;
   font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 窄屏：主内容区必须能纵向滑动 */
+@media (max-width: 1023px) {
+  .rf-mobile-scroll {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+  }
 }
