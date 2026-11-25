@@ -256,8 +256,8 @@ export default function ReactFlowVisualizer() {
         </p>
       </div>
 
-      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-hidden lg:grid-cols-2 lg:items-stretch">
-        <section className="flex min-h-0 flex-col overflow-hidden lg:h-full lg:overflow-y-auto">
+      <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto lg:grid-cols-2 lg:items-stretch lg:overflow-hidden">
+        <section className="flex min-h-0 flex-col max-lg:shrink-0 lg:h-full lg:overflow-y-auto lg:overflow-hidden">
           <div className={`${panel} flex min-h-0 flex-1 flex-col`}>
             <div className={panelHead}>
               <span>实例代码</span>
@@ -342,7 +342,7 @@ export default function ReactFlowVisualizer() {
           </div>
         </section>
 
-        <section className="flex min-h-0 flex-col gap-3 overflow-y-auto max-lg:overflow-visible lg:h-full">
+        <section className="flex min-h-0 flex-col gap-3 max-lg:shrink-0 lg:h-full lg:overflow-y-auto">
           <div className={`${panel} shrink-0 pb-3`}>
             <div className={panelHead}>
               <span>
