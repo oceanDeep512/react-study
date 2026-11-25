@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rf-bg: #0b1020;
+  --color-rf-panel: #10182a;
+  --color-rf-border: rgb(122 154 224 / 0.18);
+  --color-rf-text: #e6edff;
+  --color-rf-dim: #8b9ab8;
+  --color-rf-done: #35d6b0;
+  --color-rf-active: #6aa6ff;
+  --color-rf-skip: #ffb454;
+  --color-rf-next: #c79bff;
+  --font-mono: Menlo, Consolas, "Noto Sans Mono CJK SC", "Sarasa Mono SC",
+    ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--color-rf-bg);
+  color: var(--color-rf-text);
+}
+
+body {
+  overflow: hidden;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}

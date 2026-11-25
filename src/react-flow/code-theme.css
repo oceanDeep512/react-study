@@ -1,0 +1,80 @@
+/* 语法高亮 + 组件树 SVG（不适合用 Tailwind 表达的部分） */
+
+.rf-code-text .tk-kw {
+  color: #c792ea;
+}
+.rf-code-text .tk-str {
+  color: #c3e88d;
+}
+.rf-code-text .tk-cmt {
+  color: #6a7a96;
+  font-style: italic;
+}
+.rf-code-text .tk-tag,
+.rf-code-text .tk-fn {
+  color: #82aaff;
+}
+.rf-code-text .tk-attr {
+  color: #ffcb6b;
+}
+.rf-code-text .tk-num {
+  color: #f78c6c;
+}
+
+.rf-tree-edge {
+  fill: none;
+  stroke: #263552;
+  stroke-width: 1.6;
+}
+.rf-tree-edge.is-lit {
+  stroke: #35d6b0;
+  opacity: 0.6;
+}
+.rf-tree-edge.is-current {
+  stroke: #6aa6ff;
+  stroke-width: 2.2;
+  opacity: 1;
+}
+
+.rf-tree-node rect {
+  fill: #16233d;
+  stroke: #34456b;
+  stroke-width: 1.4;
+}
+.rf-tree-node text {
+  fill: #a9badb;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: Menlo, Consolas, "PingFang SC", sans-serif;
+}
+.rf-tree-node.kind-root rect {
+  fill: #1d2b4d;
+}
+.rf-tree-node.kind-dom rect {
+  fill: #132b35;
+  stroke: #2b5e66;
+}
+.rf-tree-node.is-done rect {
+  stroke: #35d6b0;
+  fill: rgba(53, 214, 176, 0.09);
+}
+.rf-tree-node.is-done text {
+  fill: #9fe8d6;
+}
+.rf-tree-node.is-current rect {
+  stroke: #6aa6ff;
+  fill: rgba(106, 166, 255, 0.2);
+  stroke-width: 2;
+}
+.rf-tree-node.is-current text {
+  fill: #fff;
+}
+.rf-tree-node.is-gone rect {
+  stroke: #465472;
+  stroke-dasharray: 5 4;
+  fill: rgba(70, 84, 114, 0.12);
+}
+.rf-tree-node.is-gone text {
+  fill: #5d6b8c;
+  text-decoration: line-through;
+}
