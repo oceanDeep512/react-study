@@ -38,3 +38,10 @@ body {
     touch-action: pan-y;
   }
 }
+
+/* 执行阶段条：允许横向拖滑，不被外层 pan-y 抢走 */
+.rf-phase-strip {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}

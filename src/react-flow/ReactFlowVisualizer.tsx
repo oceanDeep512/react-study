@@ -131,6 +131,8 @@ export default function ReactFlowVisualizer() {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const tableRef = useRef<HTMLDivElement>(null);
+  const phaseStripRef = useRef<HTMLDivElement>(null);
+  const codeRef = useRef<HTMLDivElement>(null);
 
   const scene = SCENES[sceneIndex] ?? SCENES[0]!;
   const step = scene.steps[stepIndex] ?? scene.steps[0]!;
@@ -204,8 +206,49 @@ export default function ReactFlowVisualizer() {
     const wrap = tableRef.current;
     const row = wrap?.querySelector<HTMLElement>("[data-current-row]");
     if (wrap && row) {
-      wrap.scrollTop = Math.max(0, row.offsetTop - wrap.clientHeight / 2);
+      const rel =
+        row.getBoundingClientRect().top -
+        wrap.getBoundingClientRect().top +
+        wrap.scrollTop;
+      wrap.scrollTop = Math.max(
+        0,
+        rel - Math.max(0, (wrap.clientHeight - row.clientHeight) / 2),
+      );
     }
+  }, [stepIndex, sceneIndex]);
+
+  useEffect(() => {
+    const strip = phaseStripRef.current;
+    const active = strip?.querySelector<HTMLElement>("[data-phase-active]");
+    if (!strip || !active) return;
+    const rel =
+      active.getBoundingClientRect().left -
+      strip.getBoundingClientRect().left +
+      strip.scrollLeft;
+    strip.scrollTo({
+      left: Math.max(
+        0,
+        rel - Math.max(0, (strip.clientWidth - active.clientWidth) / 2),
+      ),
+      behavior: "auto",
+    });
+  }, [stepIndex, sceneIndex, activeBlock]);
+
+  useEffect(() => {
+    const wrap = codeRef.current;
+    const line = wrap?.querySelector<HTMLElement>("[data-focus-line]");
+    if (!wrap || !line) return;
+    const rel =
+      line.getBoundingClientRect().top -
+      wrap.getBoundingClientRect().top +
+      wrap.scrollTop;
+    wrap.scrollTo({
+      top: Math.max(
+        0,
+        rel - Math.max(0, (wrap.clientHeight - line.clientHeight) / 2),
+      ),
+      behavior: "auto",
+    });
   }, [stepIndex, sceneIndex]);
 
   const selectScene = (i: number) => {
@@ -284,7 +327,10 @@ export default function ReactFlowVisualizer() {
                 下一步
               </span>
             </div>
-            <div className="overflow-auto py-2 font-mono text-xs leading-5 max-lg:max-h-[38vh] lg:min-h-0 lg:flex-1">
+            <div
+              ref={codeRef}
+              className="overflow-auto py-2 font-mono text-xs leading-5 max-lg:max-h-[38vh] lg:min-h-0 lg:flex-1"
+            >
               {scene.code.map((line, i) => {
                 const n = i + 1;
                 const focused = view.focus.includes(n);
@@ -320,6 +366,7 @@ export default function ReactFlowVisualizer() {
                 return (
                   <div
                     key={n}
+                    data-focus-line={focused ? "" : undefined}
                     className={`flex items-start gap-2 border-l-[3px] px-3 ${border} ${skipped ? "opacity-80" : ""} ${!focused && !skipped && !executed ? "opacity-75" : ""} ${previewed ? "shadow-[inset_0_-1px_0_0_rgba(199,155,255,0.75)]" : ""}`}
                   >
                     <span className="h-5 w-5 shrink-0 text-right font-mono text-xs leading-5 text-slate-600 select-none">
@@ -377,13 +424,17 @@ export default function ReactFlowVisualizer() {
           <div className={`${panel} shrink-0`}>
             <div className={panelHead}>
               <span>执行阶段</span>
-              <span className={hint}>render → … → effect</span>
+              <span className={hint}>左右滑看完整链路</span>
             </div>
-            <div className="flex gap-2 overflow-x-auto p-2.5">
+            <div
+              ref={phaseStripRef}
+              className="rf-phase-strip flex gap-2 overflow-x-auto overscroll-x-contain p-2.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:thin] touch-pan-x"
+            >
               {PHASE_BLOCKS.map((b, i) => (
                 <div
                   key={b.id}
-                  className={`relative min-w-[78px] flex-1 rounded-lg border px-2.5 py-2 ${
+                  data-phase-active={b.id === activeBlock ? "" : undefined}
+                  className={`relative w-[88px] shrink-0 rounded-lg border px-2.5 py-2 ${
                     b.id === activeBlock
                       ? "border-sky-300 bg-blue-500/30"
                       : pastBlocks.has(b.id)
